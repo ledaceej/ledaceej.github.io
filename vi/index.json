@@ -1,69 +1,62 @@
 [
 {
-	"uri": "/vi/1-introduce/1.1-lambda/",
+	"uri": "//localhost:1313/vi/1-introduce/1.1-lambda/",
 	"title": "Subnets",
 	"tags": [],
 	"description": "",
 	"content": "Subnets Subnet là một phân đoạn của dải địa chỉ IP mà bạn sử dụng khi khởi tạo Amazon VPC, cung cấp trực tiếp dải mạng hoạt động cho các tài nguyên AWS có thể chạy bên trong nó như Amazon EC2, Amazon RDS (CSDL Quan hệ Amazon),\u0026hellip; Các subnet cũng được xác định thông qua CIDR block (ví dụ: 10.0.1.0/24 và 192.168.0.0/24) và bắt buộc các CIDR của subnet phải nằm trong CIDR của VPC. Subnet nhỏ nhất có thể tạo được là /28 (16 địa chỉ IP). AWS lưu trữ 4 địa chỉ IP đầu tiên và 1 địa chỉ IP cuối cùng của mỗi subnet cho các mục đích kết nối mạng nội bộ. Ví dụ: subnet /28 có 16 địa chỉ IP khả dụng, nhưng loại bỏ 5 reserved IP cho AWS, như vậy còn lại 11 địa chỉ IP có thể sử dụng cho các tài nguyên hoạt động bên trong subnet này.\nAvailability Zone hay được viết tắt thành AZ là một trung tâm dữ liệu con, nằm bên trong Region và được xác định dựa treo vị trí địa lý. Bên trong AZ có thể có một hoặc nhiều subnet, nhưng một subnet chỉ có thể nằm trong duy nhất một AZ mà không thể mở rộng sang AZ khác.\nCác subnet được chia thành các loại như Public, Private, hoặc VPN-only.\nPublic subnet là subnet có route table (sẽ thảo luận sau) điều hướng lưu lượng truy cập bên trong subnet đi tới VPC IGW (cũng sẽ thảo luận sau) Private subnet thì ngược lại với Public subnet, nó không có route table điều hướng lưu lượng truy cập tới VPC IGW. VPN-only subnet là subnet mà có route table điều hướng lưu lượng truy cập tới VPG của Amazon VPC (sẽ thảo luận sau). Bất kể loại mạng con nào, dải địa chỉ IP nội bộ của subnet luôn là private (nghĩa là từ bên ngoài Internet không thể kết nối trực tiếp tới các địa chỉ thuộc dải này).\n"
 },
 {
-	"uri": "/vi/3-lambda/",
+	"uri": "//localhost:1313/vi/3-lambda/",
 	"title": "Các bước chuẩn bị",
 	"tags": [],
 	"description": "",
 	"content": "Các bước chuẩn bị Trong bài thực hành này, chúng ta sẽ xây dựng một mô hình theo sơ đồ bên dưới:\nNội dung Tạo VPC Tạo Subnet Tạo Internet Gateway Tạo Route Table Tạo Security Group "
 },
 {
-	"uri": "/vi/2-preparation/2.3-createsnapshot/",
-	"title": "VPC Resource Map",
-	"tags": [],
-	"description": "",
-	"content": "VPC Resource Map Để bắt đầu, hãy chọn một VPC đã tồn tại trong bảng điều khiển VPC. Trong phần chi tiết, hãy chọn tab Sơ đồ Tài nguyên. Tại đây, bạn có thể xem các tài nguyên trong VPC của bạn và mối quan hệ giữa các tài nguyên đó.\nKhi trỏ chuột qua một tài nguyên, bạn có thể xem các tài nguyên liên quan và các đường nối được đánh dấu. Nếu bạn nhấp chuột để chọn tài nguyên, bạn có thể xem một số dòng chi tiết và một liên kết để xem chi tiết của tài nguyên đã chọn.\nBắt đầu sử dụng trải nghiệm tạo VPC Bản đồ tài nguyên Amazon VPC hiện nay có sẵn trong tất cả các Vùng AWS mà Amazon VPC có sẵn, và bạn có thể bắt đầu sử dụng nó từ hôm nay.\nTrải nghiệm tạo bản đồ tài nguyên VPC và tạo mới chỉ hiển thị VPC, subnet, bảng định tuyến, cổng tiếp cận Internet, cổng NAT và cổng tiếp cận Amazon S3.\nBản đồ tài nguyên Amazon Virtual Private Cloud (VPC) là một tính năng cho phép bạn xem và quản lý tất cả các tài nguyên trong mạng VPC của bạn tại một nơi. Với bản đồ tài nguyên VPC, bạn có thể xem mối quan hệ giữa VPC, subnet, bảng định tuyến, cổng tiếp cận Internet, cổng NAT và cổng tiếp cận Amazon S3, giúp cho bạn hiểu rõ cấu trúc và kết nối của mạng của bạn.\nBạn có thể sử dụng bản đồ tài nguyên VPC để tạo, chỉnh sửa và xóa các tài nguyên VPC, cũng như hình dung luồng truyền dữ liệu mạng giữa chúng. Điều này rất hữu ích khi bạn làm việc với cấu hình VPC phức tạp và muốn đảm bảo mạng của bạn.\n"
-},
-{
-	"uri": "/vi/4-cloudwatch/",
+	"uri": "//localhost:1313/vi/4-cloudwatch/",
 	"title": "Cấu hình Site to Site VPN",
 	"tags": [],
 	"description": "",
 	"content": "Chúng ta có thể kết nối TTDL On-premise tới Amazon VPC sử dụng VPN cứng hoặc mềm tùy thuộc mục đích và nhu cầu sử dụng thực thế.\nĐể thiết lập kết nối VPN Site to Site, chúng ta sẽ cần tạo và cấu hình Virtual Private Gateway VPG và Customer Gateway CGW.\nVirtual Private Gateway (VPG) là một trung tâm điều khiển kết nối the virtual private network (VPN) được cài đặt ở đầu AWS. A Customer Gateway (CGW) là thành phần đại diện cho thiết bị VPN cứng hoặc mềm được cài đặt ở đầu Khách hàng. VPN tunnel sẽ được thiết lập ngay sau khi lưu lượng dữ liệu được truyền tải giữa AWS và hệ thống mạng của khách hàng. Trong kết nối đó, ta phải chỉ rõ loại định tuyến sẽ được sử dụng để đảm bảo an toàn cũng như chất lượng về mặt truyền tải dữ liệu.\nNếu CGW ở phía khách hàng có hỗ trợ Border Gateway Protocol (BGP), thì trong cấu hình VPN connection ta bắt buộc phải đặt định tuyến là dynamic routing.\nCòn ngược lại ta phải cấu hình định tuyến kết nối là static routing. Trường hợp sử dụng static routing, ta phải nhập chính xác những định tuyến cần thiết cho việc kết nối từ phía Khách hàng tới VPG được thiết lập ở đầu AWS. Đồng thời định tuyến cho VPC cũng phải được cấu hình propagated để cho phép các tài nguyên có thể trao đổi dữ liệu đi ra và đi vào trong kết nối VPN tunnel giữa AWS với hệ thống mạng của Khách hàng.\nAmazon VPC cung cấp nhiều loại CGWs, và từng CGW được gán với một VPG nhưng 1 VPG có thể kết hợp với nhiều CGW (many-to-one design). Để hỗ trợ mô hình này thì địa chỉ IP của CGW phải là duy nhất trong một region.\nAmazon VPC cũng cung cấp các thông tin cần thiết cho Nhân viên quản trị mạng có thể cấu hình CGW và thiết lập kết nối VPN tới VPG trên AWS. Kết nối VPN luôn bao gồm 2 Internet Protocol Security (IPSec) tunnels để đảm bảo tính sẵn sàng cao của kết nối.\nBên dưới là những đặc điểm quan trọng mà ta cần nắm về VPG, CGW, and VPN:\nVPG là thành phần đầu cuối của VPN tunnel nằm trên AWS. CGW có thể là thiết bị phần cứng hoặc ứng dụng phần mềm nằm ở đầu Khách hàng trong kết nối VPN tunnel. Bạn phải khởi tạo kết nối VPN tunnel từ CGW tới VPG. VPG hỗ trợ cả dynamic routing (BGP) và static routing. Kết nối VPN luôn có 2 tunnels nhằm đảm bảo tính sẵn sàng cao cho kết nối với VPC từ site Khách hàng. Bài lab giúp chúng ta học được cách thiết lập một kết nối Site to Site VPN trong AWS. Trong thực tế, giải pháp này khá được ưa chuộng do ưu điểm giá thành rẻ, đồng thời rất dễ cấu hình do AWS cung cấp hướng dẫn cho từng loại thiết bị phía đầu Customer. Việc Customer bận tâm duy nhất đó là chuẩn bị đường internet để từ đó tạo đường hầm an toàn bí mật (sử dụng IPSec) kết nối tới AWS thông qua AWS VPN tunnel.\nTrong phạm vi bài lab, giả lập rằng chúng ta có Main office ( VPC ASG ) và Branch office ( VPC ASG VPN ) đặt tại 2 VPC thuộc 2 AZ khác nhau để có sự khác biệt về mặt network. Trên mỗi VPC thực hiện tạo EC2 cho phép SSH từ bên ngoài, nhưng không có khả năng kết nối và ping lẫn nhau sử dụng địa chỉ Private IP của mỗi EC2. Việc ta cần làm là cấu hình VPN để các địa chỉ Private IP có thể ping được lẫn nhau sử dụng VPN Site-to-Site.\nNội dung:\nTạo ASG VPN VPC và subnet Cấu hình Site to Site VPN và kiểm tra kết nối bằng private IP "
 },
 {
-	"uri": "/vi/5-cleanup/",
+	"uri": "//localhost:1313/vi/5-cleanup/",
 	"title": "Dọn dẹp tài nguyên",
 	"tags": [],
 	"description": "",
 	"content": "Dọn dẹp tài nguyên Chúng ta sẽ tiến hành xóa các tài nguyên theo thứ tự sau\nTerminate các EC2 Instance. Terminate EC2 instance. Truy cập Amazon EC2 console tại địa chỉ EC2. Trên thanh điều hướng bên trái, chọn Intances Chọn tất cả EC2 Instance liên quan tới bài lab. Chọn Instance state Chọn Terminate instance Xác nhận terminate. Xóa NAT Gateway, Elastic IP Address Xóa NAT Gateway và Elastic IP Address. AWS sẽ thu tiền cho các EIP lãng phí nên bạn cần kiểm tra kỹ để tránh bị trừ chi phí ngoài ý muốn. Truy cập trang Amazon VPC console tại địa chỉ VPC Trên thanh điều hướng bên trái , click NAT Gateway. Chọn NAT Gateway. Click Action. Click Delete NAT Gateway. Gõ delete. Click Delete để xác nhận xóa NAT Gateway Xóa xóa Elastic IP Address. Tiếp tục xóa Elastic IP Address. Truy cập trang Amazon VPC console tại địa chỉ https://console.aws.amazon.com/vpc/ Trên thanh điều hướng bên trái , click Elastic IP. Chọn Elastic IP Address chúng ta đã tạo. Click Action. Click Release Elastic IP Address Click Release. Xóa EC2 Instance concect endpoint Truy cập vào giao dịch Endpoint Chọn Action, chọn Delete VPC endpoints Nhập delete Tiếp tục làm tương tự và xóa theo thứ tự sau nhé: VPN Site to Site connection. Virtual Private Gateway. Customer Gateway. VPC ASG VPN VPC ASG. "
 },
 {
-	"uri": "/vi/1-introduce/",
+	"uri": "//localhost:1313/vi/1-introduce/",
 	"title": "",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "/vi/2-preparation/",
+	"uri": "//localhost:1313/vi/2-preparation/",
 	"title": "",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "/vi/",
+	"uri": "//localhost:1313/vi/",
 	"title": "",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "/vi/categories/",
+	"uri": "//localhost:1313/vi/categories/",
 	"title": "Categories",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "/vi/tags/",
+	"uri": "//localhost:1313/vi/tags/",
 	"title": "Tags",
 	"tags": [],
 	"description": "",

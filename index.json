@@ -1,83 +1,83 @@
 [
 {
-	"uri": "/",
+	"uri": "//localhost:1313/",
 	"title": "",
 	"tags": [],
 	"description": "",
 	"content": "Efficient AWS Cost Management through Lambda and CloudWatch Overview In this lab, you will explore the fundamentals of Amazon VPC (Virtual Private Cloud) and AWS VPN (Virtual Private Network) Site-to-Site connections. Gain an understanding of essential concepts and features within Amazon VPC, and practice creating a basic VPC. Additionally, learn how to configure a Site-to-Site VPN to establish a connection between an on-premise environment and an AWS VPC environment.\nContent Introduction Preparation Setting Lambda Function Testing Using CloudWatch to triggering Resource Cleanup "
 },
 {
-	"uri": "/2-preparation/2.2-createec2/",
+	"uri": "//localhost:1313/2-preparation/2.1-createvpc/",
+	"title": "Create EC2 Server",
+	"tags": [],
+	"description": "",
+	"content": "Create VPC Access the AWS Management Console interface: Locate and click on VPC Choose VPC Within the VPC interface: Select Your VPC Click on Create VPC Follow these steps to create a VPC: Choose Resource and select VPC only Enter Name tag as MyVPCTest Set IPv4 CIDR to 10.11.0.0/16 For the Tenancy configuration, it\u0026rsquo;s recommended to keep the default setting. Switching to Dedicated may restrict the creation of certain EC2 Instance types within the VPC, as they require the default tenancy.\nClick on Create VPC\nComplete the process of creating the VPC\n"
+},
+{
+	"uri": "//localhost:1313/2-preparation/2.2-createec2/",
 	"title": "Create EC2 Server",
 	"tags": [],
 	"description": "",
 	"content": "Create EC2 Instances in Subnets Access the AWS Management Console:\nNavigate to EC2 Click on Instances In the EC2 interface:\nSelect Instances Choose Launch instances Provide a Name and tags for the instance, enter DemoAutoDeleteSnapShot\nChoose the AMI:\nSelect Quick Start Choose Amazon Linux 2 Select an AMI Select an Instance type and opt to Create a new key pair\nIn the Create key pair interface:\nSpecify the Key pair name, e.g., peering-key (optional name, you can set any). Choose Key pair type: RSA Select Private key file format: .pem Configure the Network:\nSelect the VPC: MyVPCTest\nChoose the Subnet: Public Subnet 1\nChoose the Subnet: my-subnet\nFor Common security group, select Select existing security group\nChoose default sg\nClick Launch instance\nComplete the instance creation "
 },
 {
-	"uri": "/2-preparation/2.3-createsnapshot/",
+	"uri": "//localhost:1313/2-preparation/2.3-createsnapshot/",
 	"title": "Create Volume and Snapshot",
 	"tags": [],
 	"description": "",
 	"content": "Volume To begin, In the Elastic Block Store section, select \u0026lsquo;Volumes\u0026rsquo;.\nYou will notice that a default volume has already been created.\nSnapshot Next, navigate to the Elastic Block Store section and select Volumes Click on Snapshot, and then click the Create Snapshot. It will prompt you with a page look like this\nIn the Volume ID section choose your default Volume ID created when we create instance.\nProvide a name for your Snapshot, and then scroll down and click Create Snapshot\n"
 },
 {
-	"uri": "/2-preparation/2.1-createvpc/",
-	"title": "Create VPC",
-	"tags": [],
-	"description": "",
-	"content": "Create VPC Access the AWS Management Console interface: Locate and click on VPC Choose VPC Within the VPC interface: Select Your VPC Click on Create VPC Follow these steps to create a VPC: Choose Resource and select VPC only Enter Name tag as MyVPCTest Set IPv4 CIDR to 10.11.0.0/16 For the Tenancy configuration, it\u0026rsquo;s recommended to keep the default setting. Switching to Dedicated may restrict the creation of certain EC2 Instance types within the VPC, as they require the default tenancy.\nClick on Create VPC\nComplete the process of creating the VPC\n"
-},
-{
-	"uri": "/1-introduce/",
+	"uri": "//localhost:1313/1-introduce/",
 	"title": "Introduction",
 	"tags": [],
 	"description": "",
 	"content": "Introduction Problem:\nSometimes, developers create EC2 instances with volumes, and create snapshots for backup purposes. When they don\u0026rsquo;t need the EC2 instance and decide to terminate them, they sometimes forget to delete snapshots. Then snapshots is charged although it is unused snapshots even they dont active them. There are many similar problems like this. For example, we attach and Elastic IP to EC2 and forget delete it after terminating EC2 instance.\nSolution:\nUsing AWS service to avoid wasting money. We made a smart Lambda fuction. If Lambda finds any snapshot that isn\u0026rsquo;t connected to any active EC2 instances, it will deletes it. This helps us to keep costs down.\nIn the following sections, we will deep into fundamental about Lambda.\n"
 },
 {
-	"uri": "/1-introduce/1.1-lambda/",
+	"uri": "//localhost:1313/1-introduce/1.1-lambda/",
 	"title": "Lambda",
 	"tags": [],
 	"description": "",
 	"content": "Lambda Lambda is a serverless computing service provided by Amazon Web Service. It allows run code without server. The way of Lambda act:\nServerless Computing: we don\u0026rsquo;t need server, infrastructure, it auto scale up and down depend on demands. Event-Driven Executing: we can activate Lambda by others AWS service like S3, DynamoDB, API Gateway,\u0026hellip; Support for multiple Programing Languages: Python, Node.js, Java, C#, Go,\u0026hellip; Pay-As-You-Go Pricing Model: based on how many you active it. Scalability and High Availability: auto scale up and down depend on demand. Intergration with AWS Service: collaborate with other AWS services to build complex application. Volume and Snapshot Volume in EBS(AWS Elastic Block Store) is storing service, it is a virtual disk attached in EC2 instance. It works like traditional hard disk.\nSnapshot is a copy of volume EBS in the specific points. It store all data of volume and allow to recreate volume from this data.\n"
 },
 {
-	"uri": "/2-preparation/",
+	"uri": "//localhost:1313/2-preparation/",
 	"title": "Preparation",
 	"tags": [],
 	"description": "",
 	"content": "Contents Create VPC Create EC2 Create SnapShot "
 },
 {
-	"uri": "/3-lambda/",
+	"uri": "//localhost:1313/3-lambda/",
 	"title": "Lambda ",
 	"tags": [],
 	"description": "",
 	"content": "Preparation steps After creating Snapshot, navigate to Lambda Console\nYou will see options in the interface like Create Function Select Author from scratch Enter the Function name demo-cost-optimize Select Python 3.11, and other things set default value. Then select Create function\nAfter creating the function, scroll dow and you will see something like the image below\nClick on the Code section\nNext, clear the existing code and replace it with the code below. You can download from my git repository https://github.com/ledaceej/identify-stale-snapshot/tree/main\nClick Deploy to save your changes, and then click Test. It will prompt page that looks like the one given below. Setting configuration like image blow and then click Save\nAfter that you create demo-cost-optimize function successfully\nOnce you\u0026rsquo;ve created the event, proceed to the IAM Console\nSelect Policies section and click Create policy\nSelect service as EC2\nIn the Actions section, grant permissions for the following actions: DescribeInstances, DescribeVolumes, DescribeSnapshots, DeleteSnapshots and click Next Enter cost-optimizing for Policy name and click Create policy\nNext, we attach Policy permission to Role\nSelect cost-optimizing and click Add permission\nYou are successfully attach policy for role\nTesting From console find Lambda\nGo on to Function and select demo-cost-optimize and click Code.\nAfter that, you can run the code; it will display some outputs as shown below. Nothing happened\nYou can terminate the EC2 instance to test Lambda sfunction. Navigate to Ec2 instances and terminate it by following steps like image below\nMove on Snapshot to check it still exist Go to the Lambda Function page to test Code, under the Code section, click Test code, it will display an output like this. Move on Snapshot to check it don\u0026rsquo;t exist We are success to create Lamda Function to terminated Snapshot when it don\u0026rsquo;t attached to any active EC2 instance\n"
 },
 {
-	"uri": "/4-cloudwatch/",
+	"uri": "//localhost:1313/4-cloudwatch/",
 	"title": "Cloudwatch to automatically trigger Lambda function",
 	"tags": [],
 	"description": "",
 	"content": "We can use Cloudwatch to automatically trigger the Lambda Function every hour, day, minute or even second. but this must charge more costs. However, manually triggering this function is the better way because it allow us to trigger it when we need.\nNavigate to CloudWatch Console Select Rules and click Create rule Enter demo-cost-optimizing to Name Enter demo-cost-optimizing to Description-optional Select Schedule and Click Continue in EventBridge Scheduler 3. Next, on the following page, confige Schedules pattern as follows\nEnter demo-cost-optimizing to Name Enter demo-cost-optimizing to Description-optional And configure like image below Setting like image makes CloudWatch trigger to Lambda function 12 hours per time and maximum retry 3 time if errors happened Click Next Pick Templates target and AWS Lambda Select Lambda function we want to set Cloudwatch Click Next Configre parameters depends on your demands Click Next Scroll down Click Create schedule Finally, we set Cloudwatch to automatically call Lambda function every 12 hour to delete Snapshot not attached with active EC2 instances. However, please note that this setup will incur some costs since the function is triggered continuously every hour. Alternatively, we can configure it to run on specific days and times as needed.\n"
 },
 {
-	"uri": "/5-cleanup/",
+	"uri": "//localhost:1313/5-cleanup/",
 	"title": "Clean up resources",
 	"tags": [],
 	"description": "",
 	"content": "Clean up resources We will proceed to delete the resources in the following order:\nDelete schedule of CloudWatch\nDelete lambda function\nTerminate EC2 instance\nDelete VPC\n"
 },
 {
-	"uri": "/categories/",
+	"uri": "//localhost:1313/categories/",
 	"title": "Categories",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "/tags/",
+	"uri": "//localhost:1313/tags/",
 	"title": "Tags",
 	"tags": [],
 	"description": "",
